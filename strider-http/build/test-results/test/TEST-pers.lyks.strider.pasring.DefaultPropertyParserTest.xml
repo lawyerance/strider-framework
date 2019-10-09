@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="pers.lyks.strider.pasring.DefaultPropertyParserTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2019-09-11T14:51:48" hostname="Rance-Pro.local" time="0.007">
+  <properties/>
+  <testcase name="parseWithDefaultValueSeparatorByLine" classname="pers.lyks.strider.pasring.DefaultPropertyParserTest" time="0.005"/>
+  <testcase name="parseWithDefaultValueSeparatorByColon" classname="pers.lyks.strider.pasring.DefaultPropertyParserTest" time="0.001"/>
+  <testcase name="parseOnlyOne" classname="pers.lyks.strider.pasring.DefaultPropertyParserTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,11 @@
+include 'strider-http'
+
+// Exposes gradle buildSrc for IDE support
+include "buildSrc"
+rootProject.children.find{ it.name == "buildSrc" }.name = "build-src"
+
+rootProject.name = 'strider'
+rootProject.children.each {project ->
+    project.buildFileName = "${project.name}.gradle"
+}
+

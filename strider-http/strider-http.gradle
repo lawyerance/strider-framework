@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'pers.lyks.strider'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = "${javaVersion}"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    compile group: 'org.javassist', name: 'javassist', version: '3.24.1-GA'
+
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: "${httpClientVersion}"
+
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${jacksonVersion}"
+
+    compile group: 'com.google.guava', name: 'guava', version: '20.0'
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.7.RELEASE'
+
+}

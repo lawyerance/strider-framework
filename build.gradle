@@ -1,0 +1,143 @@
+description = "Strider Framework $version"
+
+defaultTasks "clean", "build"
+
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "io.franzbecker:gradle-lombok:3.1.0"
+    }
+}
+apply plugin: 'idea'
+//apply plugin: "findbugs"
+//
+//findbugs {
+//    toolVersion = "2.0.1"
+//    sourceSets = [sourceSets.main]
+//    ignoreFailures = true
+//    reportsDir = file("$project.buildDir/findbugsReports")
+//    effort = "max"
+//    showProgress = true
+//    reportLevel = "high"
+//    visitors = ["FindSqlInjection", "SwitchFallthrough"]
+//    omitVisitors = ["FindNonShortCircuit"]
+//    includeFilter = file("$rootProject.projectDir/config/findbugs/includeFilter.xml")
+//    excludeFilter = file("$rootProject.projectDir/config/findbugs/excludeFilter.xml")
+//    excludeBugsFilter = file("$rootProject.projectDir/config/findbugs/excludeBugsFilter.xml")
+//}
+
+ext {
+
+    /*
+    Open the Git repository in the current directory.
+    Get commit id of HEAD.
+     */
+//    git = org.ajoberstar.grgit.Grgit.open(dir: file('.').canonicalPath)
+//    def gitHead = git.head()
+//    currentRevision = gitHead.id
+//    currentAbbreviatedRevision = gitHead.abbreviatedId
+    currentRevision = "1.0-SNAPSHOT"
+    currentAbbreviatedRevision = "0"
+}
+
+
+group "$group"
+version "$version"
+
+subprojects {
+
+    apply plugin: 'java'
+
+    apply plugin: "io.franzbecker.gradle-lombok"
+
+    apply plugin: 'checkstyle'
+
+    checkstyle {
+        toolVersion = "6.15"
+    }
+
+    lombok {
+        version "$lombokVersion"
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = ["${projectDir}/src/main/java", "${projectDir}/src/main/groovy"]
+            }
+            resources {
+                srcDirs = ["${projectDir}/src/main/resources"]
+            }
+        }
+        test {
+            java {
+                srcDirs = ["${projectDir}/src/test/java", "${projectDir}/src/test/groovy"]
+
+            }
+            resources {
+                srcDirs = ["${projectDir}/src/test/resources"]
+            }
+        }
+    }
+
+    jar {
+        manifest {
+            attributes("Implementation-Title": project.name,
+                    "Implementation-Vendor": project.group,
+                    "Created-By": project.group,
+                    "Specification-Version": rootProject.currentRevision,
+                    "Implementation-Version": project.version)
+        }
+    }
+
+
+    task sourcesJar(type: Jar) {
+        from sourceSets.main.allJava
+        archiveClassifier = 'sources'
+    }
+
+    task javadocJar(type: Jar) {
+        from javadoc
+        archiveClassifier = 'javadoc'
+    }
+
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+        options.addStringOption('charSet', 'UTF-8')
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+
+    javadoc {
+        if (JavaVersion.current().isJava9Compatible()) {
+            options.addBooleanOption('html5', true)
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url 'https://repo1.maven.org/maven2/' }
+        mavenCentral()
+    }
+
+
+    dependencies {
+
+        testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
+
+        testCompile group: 'org.mock-server', name: 'mockserver-netty', version: "${mockServerVersion}"
+
+        compile group: 'org.slf4j', name: 'slf4j-api', version: "${slf4jVersion}"
+
+    }
+
+}
